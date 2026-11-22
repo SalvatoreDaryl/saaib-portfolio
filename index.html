@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Saaib — Personal Portfolio</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <canvas id="c" aria-hidden="true"></canvas>
+    <div id="veil"></div>
+    <div class="crt"></div>
+
+    <main id="title">
+      <p class="pre">THE ADVENTURES OF</p>
+      <h1>SAAIB</h1>
+      <p class="sub">
+        PERSONAL PORTFOLIO<br /><b>CREATIVE DEVELOPER / DESIGNER</b>
+      </p>
+      <button id="start" type="button">PRESS START TO EXPLORE</button>
+      <p class="hint">ENTER / SPACE / TAP</p>
+    </main>
+
+    <nav id="qa" class="panel" aria-label="Quick access">
+      <h2>QUICK ACCESS</h2>
+      <div class="list"></div>
+    </nav>
+    <p id="credit">© 2026 SAAIB. ARROW KEYS FOR MENU</p>
+
+    <section id="hub" hidden>
+      <div class="bar">
+        <button id="back" class="panel" type="button">&lt; TITLE</button>
+        <nav id="tabs" class="panel" aria-label="Sections">
+          <div class="list"></div>
+        </nav>
+      </div>
+      <article class="dlg panel" aria-live="polite">
+        <h3></h3>
+        <p></p>
+        <ul></ul>
+      </article>
+    </section>
+    <div id="iris"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/pixel-utils.js"></script>
+    <script src="js/world.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/scenery.js"></script>
+    <script src="js/cat.js"></script>
+    <script src="js/cabin.js"></script>
+    <script src="js/interior.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/transitions.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
