@@ -25,7 +25,13 @@ function MenuItem(k) {
   bmp($(".ar", b), ARROW, ["#ffd27a"]);
   bmp($(".ic", b), ICONS[k].r, ICONS[k].c);
   $("span", b).textContent = SECT[k].label;
-  b.onclick = () => (view === "title" ? go(k, false) : openSection(k));
+  b.title = SECT[k].label;
+  b.setAttribute("aria-label", SECT[k].label);
+  b.onclick = () => {
+    if (view === "title") go(k, false);
+    else if (k === "projects" || cur === "projects") switchSectionWithIris(k);
+    else openSection(k);
+  };
   return b;
 }
 Object.keys(SECT).forEach((k) => {
@@ -54,15 +60,68 @@ function say(el, txt, done) {
     }
   }, 16);
 }
+function syncBookshelfPrompt() {
+  const shelfUi = $("#shelf-ui");
+  if (!shelfUi || typeof PROJECTS === "undefined" || !PROJECTS.length) return;
+  const idx = typeof shelfState !== "undefined" ? shelfState.selected : 0;
+  const p = PROJECTS[idx] || PROJECTS[0];
+  $("#shelf-vol").textContent = p.volume || `VOL. 0${idx + 1}`;
+  $("#shelf-title").textContent = p.title;
+  if ($("#hud-vol")) $("#hud-vol").textContent = p.volume || `VOL. 0${idx + 1}`;
+  if ($("#hud-title")) $("#hud-title").textContent = p.title;
+  const dots = $("#shelf-dots");
+  if (dots.childElementCount !== PROJECTS.length) {
+    dots.textContent = "";
+    PROJECTS.forEach((proj, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "shelf-dot";
+      btn.textContent = String(i + 1).padStart(2, "0");
+      btn.setAttribute("aria-label", proj.title);
+      btn.onclick = () => {
+        if (typeof selectBook === "function") selectBook(i, true);
+      };
+      btn.ondblclick = () => {
+        if (typeof openBook === "function") openBook(i);
+      };
+      dots.append(btn);
+    });
+  }
+  [...dots.children].forEach((b, i) => b.classList.toggle("on", i === idx));
+}
+
 function openSection(k) {
   cur = k;
   const d = $(".dlg"),
-    ul = $("ul", d);
+    ul = $("ul", d),
+    shelfUi = $("#shelf-ui");
   ul.className = "";
   ul.textContent = "";
   document
     .querySelectorAll("#tabs .mi")
     .forEach((b) => b.classList.toggle("on", b.dataset.k === k));
+
+  if (k === "projects") {
+    body.classList.add("shelf-mode");
+    $("#back .back-txt").textContent = " CABIN";
+    $("#back").title = "Back to Cabin";
+    $("#back").setAttribute("aria-label", "Back to Cabin");
+    if (typeof selectBook === "function") selectBook(0, false);
+    $("h3", d).textContent = "THE BOOKSHELF";
+    shelfUi.hidden = false;
+    syncBookshelfPrompt();
+    if ($("#hud-open")) $("#hud-open").focus({ preventScroll: true });
+    try {
+      if (location.hash !== "#projects") location.hash = "projects";
+    } catch (e) {}
+    return;
+  }
+
+  body.classList.remove("shelf-mode");
+  $("#back .back-txt").textContent = " TITLE";
+  $("#back").title = "Back to Title";
+  $("#back").setAttribute("aria-label", "Back to Title");
+  shelfUi.hidden = true;
   const s = SECT[k] || {
     head: "WELCOME, TRAVELER",
     intro:
@@ -103,15 +162,21 @@ function enter(k) {
   ["#title", "#qa", "#credit"].forEach((s) => ($(s).hidden = true));
   $("#hub").hidden = false;
   openSection(k);
-  $("#back").focus({ preventScroll: true });
+  if (k !== "projects") $("#back").focus({ preventScroll: true });
 }
 function leave() {
+  if (typeof bookOpen !== "undefined" && bookOpen) {
+    $("#book-stage").hidden = true;
+    $("#book-stage").classList.remove("is-open", "is-closing");
+    bookOpen = false;
+    bookBusy = false;
+  }
   view = "title";
   cur = null;
   dT = dOpen = 0;
   S.face = -1;
   if (reduce) paint(3, 0);
-  body.classList.remove("hub");
+  body.classList.remove("hub", "shelf-mode");
   ["#title", "#qa", "#credit"].forEach((s) => ($(s).hidden = false));
   $("#hub").hidden = true;
   try {

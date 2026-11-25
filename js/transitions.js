@@ -1,6 +1,14 @@
 /* Saaib portfolio - iris wipe and scene transitions
    Classic script: top-level names are shared with the other files in js/ (load order is set in index.html). */
 
+function cabinShelfPos() {
+  const r = cv.getBoundingClientRect(),
+    s = Math.max(r.width / W, r.height / H);
+  return [
+    r.left + (r.width - W * s) * op + 36 * s,
+    r.top + (r.height - H * s) * 0.88 + 76 * s,
+  ];
+}
 function heroPos() {
   const r = cv.getBoundingClientRect(),
     s = Math.max(r.width / W, r.height / H);
@@ -9,13 +17,13 @@ function heroPos() {
     r.top + (r.height - H * s) * 0.88 + 138 * s,
   ];
 }
-function iris(close, cb) {
+function iris(close, cb, pos) {
   if (reduce) {
     cb();
     return;
   }
   const el = $("#iris"),
-    p0 = heroPos(),
+    p0 = pos || heroPos(),
     R0 = Math.max(
       ...[
         [0, 0],
@@ -42,14 +50,27 @@ function iris(close, cb) {
     }
   })(s);
 }
-function run(fn) {
-  iris(true, () => {
-    fn();
-    iris(false, () => {
-      busy = false;
-      body.classList.remove("leaving");
-    });
-  });
+function run(fn, pos) {
+  iris(
+    true,
+    () => {
+      fn();
+      iris(
+        false,
+        () => {
+          busy = false;
+          body.classList.remove("leaving");
+        },
+        pos,
+      );
+    },
+    pos,
+  );
+}
+function switchSectionWithIris(k) {
+  if (busy || view !== "hub" || cur === k) return;
+  busy = true;
+  run(() => openSection(k), cabinShelfPos());
 }
 function go(k) {
   if (busy || view !== "title") return;

@@ -38,7 +38,7 @@
 
     <section id="hub" hidden>
       <div class="bar">
-        <button id="back" class="panel" type="button">&lt; TITLE</button>
+        <button id="back" class="panel" type="button">&lt;<span class="back-txt"> TITLE</span></button>
         <nav id="tabs" class="panel" aria-label="Sections">
           <div class="list"></div>
         </nav>
@@ -47,20 +47,106 @@
         <h3></h3>
         <p></p>
         <ul></ul>
+        <div id="shelf-ui" hidden>
+          <div class="shelf-now">
+            <span id="shelf-vol">VOL. 01</span>
+            <strong id="shelf-title">Project 01</strong>
+          </div>
+          <div class="shelf-dots" id="shelf-dots" role="group" aria-label="Books on shelf"></div>
+          <div class="shelf-actions">
+            <button id="shelf-prev-btn" class="shelf-btn" type="button">&lt; PREV</button>
+            <button id="shelf-open-btn" class="shelf-btn is-primary" type="button">OPEN BOOK</button>
+            <button id="shelf-next-btn" class="shelf-btn" type="button">NEXT &gt;</button>
+          </div>
+        </div>
       </article>
+      <div id="shelf-hud" class="panel" aria-live="polite">
+        <button id="hud-prev" class="shelf-btn" type="button" aria-label="Previous book">&lt;</button>
+        <div class="hud-info">
+          <span id="hud-vol">VOL. 01</span>
+          <strong id="hud-title">Project 01</strong>
+        </div>
+        <button id="hud-open" class="shelf-btn is-primary" type="button">OPEN</button>
+        <button id="hud-next" class="shelf-btn" type="button" aria-label="Next book">&gt;</button>
+      </div>
     </section>
+
+    <div id="book-stage" hidden role="dialog" aria-modal="true" aria-labelledby="book-title">
+      <div id="book-tome">
+        <div id="book-cover" aria-hidden="true">
+          <div class="cover-spine"></div>
+          <div class="cover-face">
+            <div class="cover-emblem"></div>
+          </div>
+        </div>
+        <div id="book-spread">
+          <div class="book-ribbon" aria-hidden="true"></div>
+          <div class="book-pages">
+            <section class="book-page page-left">
+              <header class="page-head">
+                <span id="book-vol" class="book-vol">VOL. 01</span>
+                <span class="botanical-mark" aria-hidden="true"></span>
+              </header>
+              <h2 id="book-title">Project 01</h2>
+              <p id="book-subtitle" class="book-sub"></p>
+
+              <div class="book-block">
+                <h3>PROJECT OVERVIEW</h3>
+                <p id="book-overview" class="book-text"></p>
+              </div>
+
+              <div class="book-block">
+                <h3>TECHNOLOGIES USED</h3>
+                <ul id="book-tech" class="book-tags"></ul>
+              </div>
+
+              <div class="book-block">
+                <h3>MY CONTRIBUTION</h3>
+                <p id="book-contribution" class="book-text"></p>
+              </div>
+            </section>
+
+            <div class="book-crease" aria-hidden="true"></div>
+
+            <section class="book-page page-right">
+              <div class="book-block">
+                <h3>SCREENSHOTS / PREVIEW</h3>
+                <div id="book-preview" class="book-preview"></div>
+              </div>
+
+              <div class="book-block">
+                <h3>LINKS</h3>
+                <div id="book-links" class="book-links"></div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="book-footer">
+            <div class="book-nav">
+              <button id="book-prev" class="shelf-btn" type="button">&lt; PREV BOOK</button>
+              <span id="book-counter" class="book-counter">01 / 06</span>
+              <button id="book-next" class="shelf-btn" type="button">NEXT BOOK &gt;</button>
+            </div>
+            <button id="book-close" class="shelf-btn is-primary" type="button">RETURN TO SHELF [ESC]</button>
+          </footer>
+        </div>
+      </div>
+    </div>
     <div id="iris"></div>
 
     <script src="js/config.js"></script>
     <script src="js/content.js"></script>
+    <script src="js/projects-data.js"></script>
     <script src="js/pixel-utils.js"></script>
     <script src="js/world.js"></script>
     <script src="js/state.js"></script>
     <script src="js/scenery.js"></script>
     <script src="js/cat.js"></script>
     <script src="js/cabin.js"></script>
+    <script src="js/bookshelf.js"></script>
     <script src="js/interior.js"></script>
     <script src="js/render.js"></script>
+    <script src="js/book-view.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/transitions.js"></script>
     <script src="js/main.js"></script>

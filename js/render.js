@@ -1,7 +1,12 @@
 /* Saaib portfolio - exterior renderer, frame loop and startup paint
    Classic script: top-level names are shared with the other files in js/ (load order is set in index.html). */
 
-const paint = (t, dt) => (view === "hub" ? drawIn(t, dt) : draw(t, dt));
+const paint = (t, dt) =>
+  typeof view !== "undefined" && view === "hub"
+    ? typeof cur !== "undefined" && cur === "projects" && typeof drawShelfScene === "function"
+      ? drawShelfScene(t, dt)
+      : drawIn(t, dt)
+    : draw(t, dt);
 let last = 0;
 function draw(t, dt) {
   ctx.clearRect(0, 0, W, H);
@@ -95,8 +100,8 @@ function loop(ms) {
     dt = Math.min(0.05, t - last);
   last = t;
   dOpen += (dT - dOpen) * 0.14;
-  if (S.sx < S.hc - 16) S.face = -1;
-  else if (S.sx > S.hc + 16) S.face = 1;
+  if (S.sx < S.hc - 6) S.face = -1;
+  else if (S.sx > S.hc + 6) S.face = 1;
   paint(t, dt);
   requestAnimationFrame(loop);
 }

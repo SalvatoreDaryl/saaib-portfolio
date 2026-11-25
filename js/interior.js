@@ -51,23 +51,10 @@
   f("#ffd27a", 110, 166, 106, 1);
   f("#2a140f", 6, 20, 3, 112);
   f("#2a140f", 63, 20, 3, 112);
+  f("#1f1118", 9, 22, 54, 104);
   [58, 92, 126].forEach((sy) => {
     f("#3a2014", 8, sy, 56, 3);
-    let bx = 10;
-    while (bx < 60) {
-      const w = 3 + Math.floor(rnd() * 3),
-        h = 9 + Math.floor(rnd() * 5);
-      f(
-        ["#d9453b", "#59d3c3", "#ffd27a", "#8a3a7a", "#2f4a7a", "#e8648a"][
-          Math.floor(rnd() * 6)
-        ],
-        bx,
-        sy - h,
-        w,
-        h,
-      );
-      bx += w + (rnd() > 0.8 ? 3 : 0);
-    }
+    f("#58301f", 9, sy, 54, 1);
   });
   L.in = c;
 })();
@@ -112,6 +99,7 @@ function drawIn(t, dt) {
       if (n == 2) R("#fff2b0", 178 + n * 5, 122, 1, 4);
     }
     hero(t, 124, 160);
+    if (typeof drawBookshelf === "function") drawBookshelf(t, dt);
     if (!reduce) {
       MOTES.forEach((m) => {
         ctx.globalAlpha = 0.35 + 0.35 * Math.sin(t + m.p);
